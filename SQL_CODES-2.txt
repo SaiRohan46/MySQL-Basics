@@ -1,0 +1,522 @@
+Last login: Thu Jun 25 18:01:53 on ttys000
+rohan@Rohans-MacBook-Pro ~ % mysql -u root -p
+Enter password: 
+ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: NO)
+rohan@Rohans-MacBook-Pro ~ % mysql -u root -p
+Enter password: 
+ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
+rohan@Rohans-MacBook-Pro ~ % mysql -u root -p
+Enter password: 
+ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
+rohan@Rohans-MacBook-Pro ~ % sudo /usr/local/mysql/support-files/mysql.server stop
+Password:
+ ERROR! MySQL server PID file could not be found!
+rohan@Rohans-MacBook-Pro ~ % which mysql
+/usr/local/mysql/bin/mysql
+rohan@Rohans-MacBook-Pro ~ % mysql --version
+mysql  Ver 9.7.1 for macos15 on x86_64 (MySQL Community Server - GPL)
+rohan@Rohans-MacBook-Pro ~ % brew services list
+Warning: No services available to control with `brew services`
+rohan@Rohans-MacBook-Pro ~ % ps aux | grep mysqld
+_mysql            5170   0.3  0.0 34923680   4548   ??  Ss   Tue10AM   4:33.37 /usr/local/mysql/bin/mysqld --user=_mysql --basedir=/usr/local/mysql --datadir=/usr/local/mysql/data --plugin-dir=/usr/local/mysql/lib/plugin --log-error=/usr/local/mysql/data/mysqld.local.err --pid-file=/usr/local/mysql/data/mysqld.local.pid
+rohan            19223   0.1  0.0 34131532    772 s000  S+    9:20AM   0:00.01 grep mysqld
+rohan@Rohans-MacBook-Pro ~ % sudo kill 5170
+Password:
+rohan@Rohans-MacBook-Pro ~ % ps aux | grep mysqld
+rohan            19237   0.0  0.0 34122316    728 s000  S+    9:21AM   0:00.00 grep mysqld
+rohan@Rohans-MacBook-Pro ~ % sudo /usr/local/mysql/bin/mysqld_safe --skip-grant-tables --skip-networking &
+[1] 19239
+rohan@Rohans-MacBook-Pro ~ % Logging to '/usr/local/mysql/data/Rohans-MacBook-Pro.local.err'.
+2026-06-26T03:51:50.6NZ mysqld_safe Starting mysqld daemon with databases from /usr/local/mysql/data
+
+rohan@Rohans-MacBook-Pro ~ % 
+rohan@Rohans-MacBook-Pro ~ % /usr/local/mysql/bin/mysql -u root
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 9.7.1 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> FLUSH PRIVILEGES;
+Query OK, 0 rows affected, 1 warning (0.011 sec)
+
+mysql> ALTER USER 'root'@'localhost' IDENTIFIED BY 'rohan546';
+Query OK, 0 rows affected (0.007 sec)
+
+mysql> FLUSH PRIVILEGES;
+Query OK, 0 rows affected, 1 warning (0.002 sec)
+
+mysql> EXIT;
+Bye
+rohan@Rohans-MacBook-Pro ~ % sudo pkill mysqld
+rohan@Rohans-MacBook-Pro ~ % 2026-06-26T03:54:06.6NZ mysqld_safe mysqld from pid file /usr/local/mysql/data/Rohans-MacBook-Pro.local.pid ended
+
+[1]  + done       sudo /usr/local/mysql/bin/mysqld_safe --skip-grant-tables --skip-networking
+rohan@Rohans-MacBook-Pro ~ % sudo /usr/local/mysql/support-files/mysql.server start
+Starting MySQL
+. SUCCESS! 
+rohan@Rohans-MacBook-Pro ~ % mysql -u root -p
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 9
+Server version: 9.7.1 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| PFS3               |
+| sys                |
++--------------------+
+5 rows in set (0.008 sec)
+
+mysql> SHOW TABLES;
+ERROR 1046 (3D000): No database selected
+mysql> USE PFS3;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> SHOW TABLES;
++----------------+
+| Tables_in_pfs3 |
++----------------+
+| EMPLOYEE       |
++----------------+
+1 row in set (0.001 sec)
+
+mysql> DESC EMPLOYEE;
++---------+--------------+------+-----+---------+-------+
+| Field   | Type         | Null | Key | Default | Extra |
++---------+--------------+------+-----+---------+-------+
+| EMPID   | char(5)      | YES  |     | NULL    |       |
+| FNAME   | varchar(100) | YES  |     | NULL    |       |
+| LNAME   | varchar(30)  | YES  |     | NULL    |       |
+| AGE     | int          | YES  |     | NULL    |       |
+| DOJ     | date         | YES  |     | NULL    |       |
+| ADDRESS | tinytext     | YES  |     | NULL    |       |
+| DEPT    | varchar(20)  | YES  |     | NULL    |       |
++---------+--------------+------+-----+---------+-------+
+7 rows in set (0.002 sec)
+
+mysql> --ALTER
+    -> \c
+mysql> -- ALTER
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> -- MODIFY THE FNAME COLUMN IN EMPLOYEE TABLE TO VARCHAR(70)
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> -- SYNTAX : ALTER TABLE TABLENAME MODIFY COLUMNNAME DATATYPE SIZE.
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> ALTER TABLE EMPLOYEE MODIFY FNAME VARCHAR(70)
+    -> \c
+mysql> ALTER TABLE EMPLOYEE MODIFY FNAME VARCHAR(70);
+Query OK, 0 rows affected (0.017 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE EMPLOYEE MODIFY LNAME VARCHAR(60);
+Query OK, 0 rows affected (0.005 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC EMPLOYEE;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| EMPID   | char(5)     | YES  |     | NULL    |       |
+| FNAME   | varchar(70) | YES  |     | NULL    |       |
+| LNAME   | varchar(60) | YES  |     | NULL    |       |
+| AGE     | int         | YES  |     | NULL    |       |
+| DOJ     | date        | YES  |     | NULL    |       |
+| ADDRESS | tinytext    | YES  |     | NULL    |       |
+| DEPT    | varchar(20) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+7 rows in set (0.001 sec)
+
+mysql> -- ADD A NEW COLUMN NAMED AS LOCATION 
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> -- LOCATION TYPE TINYTEXT TO THE EMPLOYEE TABLE
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> -- LOCATION TYPE TINYTEXT TO THE EMPLOYEE TABLE.
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> ALTER TABLE EMPLOYEE ADD LOCATION TINYTEXT;
+Query OK, 0 rows affected (0.011 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC EMPLOYEE;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| EMPID    | char(5)     | YES  |     | NULL    |       |
+| FNAME    | varchar(70) | YES  |     | NULL    |       |
+| LNAME    | varchar(60) | YES  |     | NULL    |       |
+| AGE      | int         | YES  |     | NULL    |       |
+| DOJ      | date        | YES  |     | NULL    |       |
+| ADDRESS  | tinytext    | YES  |     | NULL    |       |
+| DEPT     | varchar(20) | YES  |     | NULL    |       |
+| LOCATION | tinytext    | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+8 rows in set (0.001 sec)
+
+mysql> -- TO ADD A COLUMN AFTER PARTICULAR COLUMN 
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> ALTER TABLE EMPLOYEE ADD PFID INT AFTER DOJ;
+Query OK, 0 rows affected (0.010 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC EMPLOYEE;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| EMPID    | char(5)     | YES  |     | NULL    |       |
+| FNAME    | varchar(70) | YES  |     | NULL    |       |
+| LNAME    | varchar(60) | YES  |     | NULL    |       |
+| AGE      | int         | YES  |     | NULL    |       |
+| DOJ      | date        | YES  |     | NULL    |       |
+| PFID     | int         | YES  |     | NULL    |       |
+| ADDRESS  | tinytext    | YES  |     | NULL    |       |
+| DEPT     | varchar(20) | YES  |     | NULL    |       |
+| LOCATION | tinytext    | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+9 rows in set (0.001 sec)
+
+mysql> ALTER TABLE EMPLOYEE RENAME FNAME AS FIRSTNAME;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'AS FIRSTNAME' at line 1
+mysql> -- RENAME THE FNAME COLUMN TO FIRSTNAME
+Query OK, 0 rows affected (0.000 sec)
+mysql> -- RENAME THE FNAME COLUMN TO FIRSTNAME
+Query OK, 0 rows affected (0.000 sec)AME CHANGE EXISTING-COL-NAME NEW-COLUMN-NAME DATATYPE()
+
+mysql> ALTER TABLE EMPLOYEE CHANGE COLUMN FNAME FIRSTNAME(60);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(60)' at line 1
+mysql> ALTER TABLE EMPLOYEE CHANGE COLUMN FNAME FIRSTNAME VARCHAR(60);
+Query OK, 0 rows affected (0.013 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC EMPLOYEE;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| EMPID     | char(5)     | YES  |     | NULL    |       |
+| FIRSTNAME | varchar(60) | YES  |     | NULL    |       |
+| LNAME     | varchar(60) | YES  |     | NULL    |       |
+| AGE       | int         | YES  |     | NULL    |       |
+| DOJ       | date        | YES  |     | NULL    |       |
+| PFID      | int         | YES  |     | NULL    |       |
+| ADDRESS   | tinytext    | YES  |     | NULL    |       |
+| DEPT      | varchar(20) | YES  |     | NULL    |       |
+| LOCATION  | tinytext    | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+9 rows in set (0.001 sec)
+
+mysql> ALTER TABLE EMPLOYEE CHANGE COLUMN LNAME LASTNAME VARCHAR(50);
+Query OK, 0 rows affected (0.014 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC EMPLOYEE;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| EMPID     | char(5)     | YES  |     | NULL    |       |
+| FIRSTNAME | varchar(60) | YES  |     | NULL    |       |
+| LASTNAME  | varchar(50) | YES  |     | NULL    |       |
+| AGE       | int         | YES  |     | NULL    |       |
+| DOJ       | date        | YES  |     | NULL    |       |
+| PFID      | int         | YES  |     | NULL    |       |
+| ADDRESS   | tinytext    | YES  |     | NULL    |       |
+| DEPT      | varchar(20) | YES  |     | NULL    |       |
+| LOCATION  | tinytext    | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+9 rows in set (0.001 sec)
+
+mysql> ALTER TABLE EMPLOYEE RENAME COLUMN LASTNAME LNAME;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'LNAME' at line 1
+mysql> ALTER TABLE EMPLOYEE RENAME COLUMN LASTNAME TO LNAME;
+Query OK, 0 rows affected (0.006 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC EMPLOYEE;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| EMPID     | char(5)     | YES  |     | NULL    |       |
+| FIRSTNAME | varchar(60) | YES  |     | NULL    |       |
+| LNAME     | varchar(50) | YES  |     | NULL    |       |
+| AGE       | int         | YES  |     | NULL    |       |
+| DOJ       | date        | YES  |     | NULL    |       |
+| PFID      | int         | YES  |     | NULL    |       |
+| ADDRESS   | tinytext    | YES  |     | NULL    |       |
+| DEPT      | varchar(20) | YES  |     | NULL    |       |
+| LOCATION  | tinytext    | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+9 rows in set (0.001 sec)
+
+mysql> -- DROP A COLUMN,
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> -- SYNTAX : ALTER TABLE TABLE-NAME DROP COLUMN COLUMN-NAME;
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> ALTER TABLE EMPLOYEE DROP COLUMN LOCATION;
+Query OK, 0 rows affected (0.016 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> RENAME TABLE  EMPLOYEE TO EMPLOYEES;
+Query OK, 0 rows affected (0.005 sec)
+
+mysql> DESC EMPLOYEE;
+ERROR 1146 (42S02): Table 'pfs3.employee' doesn't exist
+mysql> DESC EMPLOYEES;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| EMPID     | char(5)     | YES  |     | NULL    |       |
+| FIRSTNAME | varchar(60) | YES  |     | NULL    |       |
+| LNAME     | varchar(50) | YES  |     | NULL    |       |
+| AGE       | int         | YES  |     | NULL    |       |
+| DOJ       | date        | YES  |     | NULL    |       |
+| PFID      | int         | YES  |     | NULL    |       |
+| ADDRESS   | tinytext    | YES  |     | NULL    |       |
+| DEPT      | varchar(20) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+8 rows in set (0.001 sec)
+
+mysql> RENAME TABLE EMPLOYEES TO EMPLOYEE;
+Query OK, 0 rows affected (0.005 sec)
+
+mysql> -- CHANGING TABLE-NAME
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> -- SYNTAX : RENAME TABLE TABLE-NAME TO NEW-TABLE-NAME;
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> -- SYNTAX TYPE2 : ALTER TABLE TABLE-NAME RENAME TO NEW-TABLE-NAME;
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> ALTER TABLE EMPLOYEE RENAME TO EMPLO;
+Query OK, 0 rows affected (0.006 sec)
+
+mysql> DESC EMPLO;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| EMPID     | char(5)     | YES  |     | NULL    |       |
+| FIRSTNAME | varchar(60) | YES  |     | NULL    |       |
+| LNAME     | varchar(50) | YES  |     | NULL    |       |
+| AGE       | int         | YES  |     | NULL    |       |
+| DOJ       | date        | YES  |     | NULL    |       |
+| PFID      | int         | YES  |     | NULL    |       |
+| ADDRESS   | tinytext    | YES  |     | NULL    |       |
+| DEPT      | varchar(20) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+8 rows in set (0.001 sec)
+
+mysql> ALTER TABLE EMPLO RENAME TO EMPLOYEE;
+Query OK, 0 rows affected (0.006 sec)
+
+mysql> RENAME TABLE EMPLOYEE TO EMPLOYEE;
+ERROR 1050 (42S01): Table 'EMPLOYEE' already exists
+mysql> SHOW TABLES;
++----------------+
+| Tables_in_pfs3 |
++----------------+
+| EMPLOYEE       |
++----------------+
+1 row in set (0.001 sec)
+mysql> CREATE TABLE COMPANY_STAFF(
+    -> EMPID INT,
+    -> AGE TINYTEXT,
+    -> EXPERIENCE SMALLINT,
+    -> GENDER CHAR(1),
+    -> EMPNAME VARCHAR(50),
+    -> ADDRESS TINYTEXT,
+    -> SALARY DECIMAL(10,2),
+    -> DEPARTMENT ENUM('HR','IT','SALES','FINANCE','SUPPORT'),
+    -> SKILLS SET('JAVA','PYTHON','SQL','EXCEL','COMMUNICATION'),
+    -> JOINING_DATE DATE
+    -> PRIMARY KEY(EMPID),
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(EMPID),
+)' at line 12
+mysql> CREATE TABLE COMPANY_STAFF(
+    -> EMPID INT,
+    -> AGE TINYTEXT,
+    -> EXPERIENCE SMALLINT,
+    -> GENDER CHAR(1),
+    -> EMPNAME VARCHAR(50),
+    -> ADDRESS TINYTEXT,
+    -> SALARY DECIMAL(10,2),
+    -> DEPARTMENT ENUM('HR','IT','SALES','FINANCE','SUPPORT'),
+    -> SKILLS SET('JAVA','PYTHON','SQL','EXCEL','COMMUNICATION'),
+    -> JOINING_DATE DATE,
+    -> PRIMARY KEY(EMPID)
+    -> );
+Query OK, 0 rows affected (0.007 sec)
+
+mysql> ALTER TABLE COMPANY_STAFF ADD COLUMN EMAIL;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> ALTER TABLE COMPANY_STAFF ADD COLUMN EMAIL VARCHAR(30);
+Query OK, 0 rows affected (0.012 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE COMPANY_STAFF ADD PH_NO INT;
+Query OK, 0 rows affected (0.010 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE COMPANY_STAFF ADD COLUMN SALARY INT AFTER SALARY;
+ERROR 1060 (42S21): Duplicate column name 'SALARY'
+mysql> ALTER TABLE COMPANY_STAFF ADD COLUMN BONUS INT AFTER SALARY;
+Query OK, 0 rows affected (0.013 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE COMPANY_STAFF ADD STATUS VARCHAR(10) AFTER DEPARTMENT;
+Query OK, 0 rows affected (0.011 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE COMPANY_STAFF ADD FIRST COMPANY_NAME VARCHAR(20);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'COMPANY_NAME VARCHAR(20)' at line 1
+mysql> ALTER TABLE COMPANY_STAFF ADD  COMPANY_NAME VARCHAR(20) FIRST;
+Query OK, 0 rows affected (0.011 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE COMPANY_STAFF ADD COLUMN QUALIFICATION VARCHAR(20) AFTER EMPNAME;
+Query OK, 0 rows affected (0.011 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE COMPANY_STAFF MODIFY EMPNAME EMP_NAME VARCHAR(20);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'EMP_NAME VARCHAR(20)' at line 1
+mysql> ALTER TABLE COMPANY_STAFF MODIFY EMPNAME VARCHAR(20);
+Query OK, 0 rows affected (0.020 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE COMPANY_STAFF MODIFY SALARY BIGINT;
+Query OK, 0 rows affected (0.015 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE COMPANY_STAFF RENAME COLUMN EMPNAME TO EMPLOYEE_NAME;
+Query OK, 0 rows affected (0.007 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE COMPANY_STAFF RENAME COLUMN JOINING_DATE TO DATE_OF_JOINING;
+Query OK, 0 rows affected (0.006 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC COMPANY_STAFF;
++-----------------+----------------------------------------------------+------+-----+---------+-------+
+| Field           | Type                                               | Null | Key | Default | Extra |
++-----------------+----------------------------------------------------+------+-----+---------+-------+
+| COMPANY_NAME    | varchar(20)                                        | YES  |     | NULL    |       |
+| EMPID           | int                                                | NO   | PRI | NULL    |       |
+| AGE             | tinytext                                           | YES  |     | NULL    |       |
+| EXPERIENCE      | smallint                                           | YES  |     | NULL    |       |
+| GENDER          | char(1)                                            | YES  |     | NULL    |       |
+| EMPLOYEE_NAME   | varchar(20)                                        | YES  |     | NULL    |       |
+| QUALIFICATION   | varchar(20)                                        | YES  |     | NULL    |       |
+| ADDRESS         | tinytext                                           | YES  |     | NULL    |       |
+| SALARY          | bigint                                             | YES  |     | NULL    |       |
+| BONUS           | int                                                | YES  |     | NULL    |       |
+| DEPARTMENT      | enum('HR','IT','SALES','FINANCE','SUPPORT')        | YES  |     | NULL    |       |
+| STATUS          | varchar(10)                                        | YES  |     | NULL    |       |
+| SKILLS          | set('JAVA','PYTHON','SQL','EXCEL','COMMUNICATION') | YES  |     | NULL    |       |
+| DATE_OF_JOINING | date                                               | YES  |     | NULL    |       |
+| EMAIL           | varchar(30)                                        | YES  |     | NULL    |       |
+| PH_NO           | int                                                | YES  |     | NULL    |       |
++-----------------+----------------------------------------------------+------+-----+---------+-------+
+16 rows in set (0.001 sec)
+
+mysql> ALTER TABLE COMPANY_STAFF DROP COLUMN BONUS;
+Query OK, 0 rows affected (0.012 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE COMPANY_STAFF DROP PH_NO;
+Query OK, 0 rows affected (0.010 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> RENAME TABLE COMPANY_STAFF TO STAFF_RECORDS;
+Query OK, 0 rows affected (0.006 sec)
+
+mysql> DESC STAFF_RECORDS;
++-----------------+----------------------------------------------------+------+-----+---------+-------+
+| Field           | Type                                               | Null | Key | Default | Extra |
++-----------------+----------------------------------------------------+------+-----+---------+-------+
+| COMPANY_NAME    | varchar(20)                                        | YES  |     | NULL    |       |
+| EMPID           | int                                                | NO   | PRI | NULL    |       |
+| AGE             | tinytext                                           | YES  |     | NULL    |       |
+| EXPERIENCE      | smallint                                           | YES  |     | NULL    |       |
+| GENDER          | char(1)                                            | YES  |     | NULL    |       |
+| EMPLOYEE_NAME   | varchar(20)                                        | YES  |     | NULL    |       |
+| QUALIFICATION   | varchar(20)                                        | YES  |     | NULL    |       |
+| ADDRESS         | tinytext                                           | YES  |     | NULL    |       |
+| SALARY          | bigint                                             | YES  |     | NULL    |       |
+| DEPARTMENT      | enum('HR','IT','SALES','FINANCE','SUPPORT')        | YES  |     | NULL    |       |
+| STATUS          | varchar(10)                                        | YES  |     | NULL    |       |
+| SKILLS          | set('JAVA','PYTHON','SQL','EXCEL','COMMUNICATION') | YES  |     | NULL    |       |
+| DATE_OF_JOINING | date                                               | YES  |     | NULL    |       |
+| EMAIL           | varchar(30)                                        | YES  |     | NULL    |       |
++-----------------+----------------------------------------------------+------+-----+---------+-------+
+14 rows in set (0.002 sec)
+
+mysql> RENAME TABLE STAFF_DETAILS TO COMPANY_STAFF;
+ERROR 1146 (42S02): Table 'pfs3.STAFF_DETAILS' doesn't exist
+mysql> ALTER TABLE ADD LAST_UPDATED VARCHAR(10) AFTER SKILLS;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ADD LAST_UPDATED VARCHAR(10) AFTER SKILLS' at line 1
+mysql> ALTER TABLE ADD COLUMN LAST_UPDATED VARCHAR(10) AFTER SKILLS;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ADD COLUMN LAST_UPDATED VARCHAR(10) AFTER SKILLS' at line 1
+mysql> ALTER TABLE COMPANY_STAFF ADD COLUMN LAST_UPDATED VARCHAR(10) AFTER SKILLS;
+ERROR 1146 (42S02): Table 'pfs3.company_staff' doesn't exist
+mysql> RENAME TABLE STAFF_RECORDS TO COMPANY_STAFF;
+Query OK, 0 rows affected (0.009 sec)
+
+mysql> ALTER TABLE COMPANY_STAFF ADD COLUMN LAST_UPDATED VARCHAR(10) AFTER SKILLS;
+Query OK, 0 rows affected (0.011 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC COMPANY_STAFF;
++-----------------+----------------------------------------------------+------+-----+---------+-------+
+| Field           | Type                                               | Null | Key | Default | Extra |
++-----------------+----------------------------------------------------+------+-----+---------+-------+
+| COMPANY_NAME    | varchar(20)                                        | YES  |     | NULL    |       |
+| EMPID           | int                                                | NO   | PRI | NULL    |       |
+| AGE             | tinytext                                           | YES  |     | NULL    |       |
+| EXPERIENCE      | smallint                                           | YES  |     | NULL    |       |
+| GENDER          | char(1)                                            | YES  |     | NULL    |       |
+| EMPLOYEE_NAME   | varchar(20)                                        | YES  |     | NULL    |       |
+| QUALIFICATION   | varchar(20)                                        | YES  |     | NULL    |       |
+| ADDRESS         | tinytext                                           | YES  |     | NULL    |       |
+| SALARY          | bigint                                             | YES  |     | NULL    |       |
+| DEPARTMENT      | enum('HR','IT','SALES','FINANCE','SUPPORT')        | YES  |     | NULL    |       |
+| STATUS          | varchar(10)                                        | YES  |     | NULL    |       |
+| SKILLS          | set('JAVA','PYTHON','SQL','EXCEL','COMMUNICATION') | YES  |     | NULL    |       |
+| LAST_UPDATED    | varchar(10)                                        | YES  |     | NULL    |       |
+| DATE_OF_JOINING | date                                               | YES  |     | NULL    |       |
+| EMAIL           | varchar(30)                                        | YES  |     | NULL    |       |
++-----------------+----------------------------------------------------+------+-----+---------+-------+
+15 rows in set (0.001 sec)
+
+mysql> ALTER TABLE COMPANY_STAFF RENAME TO COMP_STAFF;
+Query OK, 0 rows affected (0.005 sec)
+
+mysql> RENAME TABLE COMP_STAFF TO COMPANY_STAFF;
+Query OK, 0 rows affected (0.006 sec)
