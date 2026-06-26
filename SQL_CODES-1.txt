@@ -1,0 +1,102 @@
+mysql> tee /Users/rohan/Desktop/SQL_CODES.txt
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+4 rows in set (0.003 sec)
+
+mysql> SHOW DATABASES:
+    -> 
+    -> \c
+mysql> tee tee /path/to/your/folder/output.txt;
+mysql: Can't create/write to file 'tee /path/to/your/folder/output.txt' (OS errno 2 - No such file or directory)
+Error logging to file 'tee /path/to/your/folder/output.txt'
+mysql> tee /path/to/your/folder/SQL_CODEStxt;
+mysql: Can't create/write to file '/path/to/your/folder/SQL_CODEStxt' (OS errno 2 - No such file or directory)
+Error logging to file '/path/to/your/folder/SQL_CODEStxt'
+mysql> tee '/Users/rohan/Desktop/My SQL/SQL_CODES.txt'
+mysql: Can't create/write to file ''/Users/rohan/Desktop/My SQL/SQL_CODES.txt'' (OS errno 2 - No such file or directory)
+Error logging to file ''/Users/rohan/Desktop/My SQL/SQL_CODES.txt''
+mysql> tee /Users/rohan/Desktop/My SQL/SQL_CODES.txt
+Logging to file '/Users/rohan/Desktop/My SQL/SQL_CODES.txt'
+mysql> tee /Users/rohan/Desktop/SQL_CODES.txt
+Logging to file '/Users/rohan/Desktop/SQL_CODES.txt'
+mysql> tee /Users/rohan/Desktop/SQL_CODES.txt
+Logging to file '/Users/rohan/Desktop/SQL_CODES.txt'
+mysql> tee /Users/rohan/Desktop/SQL_CODES.txt
+Logging to file '/Users/rohan/Desktop/SQL_CODES.txt'
+mysql> tee /Users/rohan/Desktop/SQL_CODES.txt
+Logging to file '/Users/rohan/Desktop/SQL_CODES.txt'
+mysql> CREATE DATABASE PFS3;
+Query OK, 1 row affected (0.077 sec)
+
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| PFS3               |
+| sys                |
++--------------------+
+5 rows in set (0.024 sec)
+
+mysql> USE PFS3;
+Database changed
+mysql> CREATE TABLE EMPLOYEE(
+    -> EMPID CHAR(5),
+    -> FNAME VARCHAR(100),
+    -> LNAME VARCHAR(30),
+    -> AGE INT,
+    -> DOJ DATE,
+    -> ADDRESS TINYTEXT,
+    -> DEPT VARCHAR(20)
+    -> );
+Query OK, 0 rows affected (0.014 sec)
+
+mysql> SHOW EMPLOYEE
+    -> \C
+ERROR: 
+Usage: \C charset_name | charset charset_name
+    -> \c
+mysql> -- TO SHOW THE TABLE DESCRIPTION
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> DESC EMPLOYEE;
++---------+--------------+------+-----+---------+-------+
+| Field   | Type         | Null | Key | Default | Extra |
++---------+--------------+------+-----+---------+-------+
+| EMPID   | char(5)      | YES  |     | NULL    |       |
+| FNAME   | varchar(100) | YES  |     | NULL    |       |
+| LNAME   | varchar(30)  | YES  |     | NULL    |       |
+| AGE     | int          | YES  |     | NULL    |       |
+| DOJ     | date         | YES  |     | NULL    |       |
+| ADDRESS | tinytext     | YES  |     | NULL    |       |
+| DEPT    | varchar(20)  | YES  |     | NULL    |       |
++---------+--------------+------+-----+---------+-------+
+7 rows in set (0.006 sec)
+
+mysql> SHOW COLUMNS FROM EMPLOYEE;
++---------+--------------+------+-----+---------+-------+
+| Field   | Type         | Null | Key | Default | Extra |
++---------+--------------+------+-----+---------+-------+
+| EMPID   | char(5)      | YES  |     | NULL    |       |
+| FNAME   | varchar(100) | YES  |     | NULL    |       |
+| LNAME   | varchar(30)  | YES  |     | NULL    |       |
+| AGE     | int          | YES  |     | NULL    |       |
+| DOJ     | date         | YES  |     | NULL    |       |
+| ADDRESS | tinytext     | YES  |     | NULL    |       |
+| DEPT    | varchar(20)  | YES  |     | NULL    |       |
++---------+--------------+------+-----+---------+-------+
+7 rows in set (0.001 sec)
+
+mysql> notee
+Outfile disabled.
+mysql> 
+
