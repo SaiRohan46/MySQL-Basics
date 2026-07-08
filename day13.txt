@@ -1,0 +1,432 @@
+mysql> use pfs3;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> create table tab1(numid int(3));
+Query OK, 0 rows affected, 1 warning (0.024 sec)
+
+mysql> create table tab2(numid int(3));
+Query OK, 0 rows affected, 1 warning (0.006 sec)
+
+mysql> insert into tab2 values(10),(11),(12),(14);
+Query OK, 4 rows affected (0.003 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> insert into tab1 values(10),(11),(12),(14);
+Query OK, 4 rows affected (0.002 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> truncate tab12;
+ERROR 1146 (42S02): Table 'pfs3.tab12' doesn't exist
+mysql> truncate tab2;
+Query OK, 0 rows affected (0.011 sec)
+
+mysql> insert into tab2 values(11),(12),(13),(15);
+Query OK, 4 rows affected (0.002 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> select * from tab1
+    -> inner join tab2
+    -> on
+    -> tab1.numid=tab2.numid;
++-------+-------+
+| numid | numid |
++-------+-------+
+|    11 |    11 |
+|    12 |    12 |
++-------+-------+
+2 rows in set (0.000 sec)
+
+mysql> -- left join
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> select * from tab1 left join tab2 on tab1.numid=tab2.numid;
++-------+-------+
+| numid | numid |
++-------+-------+
+|    10 |  NULL |
+|    11 |    11 |
+|    12 |    12 |
+|    14 |  NULL |
++-------+-------+
+4 rows in set (0.000 sec)
+
+mysql> select * from tab1 right join tab2 on tab1.numid=tab2.numid;
++-------+-------+
+| numid | numid |
++-------+-------+
+|    11 |    11 |
+|    12 |    12 |
+|  NULL |    13 |
+|  NULL |    15 |
++-------+-------+
+4 rows in set (0.000 sec)
+
+mysql> select * from tab1 left join tab2 on tab1.numid=tab2.numid union select * from tab1 right join tab2  on tab1.numid=tab2.numid;
++-------+-------+
+| numid | numid |
++-------+-------+
+|    10 |  NULL |
+|    11 |    11 |
+|    12 |    12 |
+|    14 |  NULL |
+|  NULL |    13 |
+|  NULL |    15 |
++-------+-------+
+6 rows in set (0.001 sec)
+
+mysql> select * from tab1 cross join tab2;
++-------+-------+
+| numid | numid |
++-------+-------+
+|    14 |    11 |
+|    12 |    11 |
+|    11 |    11 |
+|    10 |    11 |
+|    14 |    12 |
+|    12 |    12 |
+|    11 |    12 |
+|    10 |    12 |
+|    14 |    13 |
+|    12 |    13 |
+|    11 |    13 |
+|    10 |    13 |
+|    14 |    15 |
+|    12 |    15 |
+|    11 |    15 |
+|    10 |    15 |
++-------+-------+
+16 rows in set (0.000 sec)
+
+mysql> drop table mployees;
+ERROR 1051 (42S02): Unknown table 'pfs3.mployees'
+mysql> drop table employees;
+Query OK, 0 rows affected (0.016 sec)
+
+mysql> show tables;
++---------------------+
+| Tables_in_pfs3      |
++---------------------+
+| BACKUPEMPLOYEES     |
+| COMPANY_STAFF       |
+| Course              |
+| Course_Completed    |
+| DEPARTMENTS         |
+| Emp                 |
+| employee            |
+| employee_attendance |
+| Orders              |
+| PRODUCTS            |
+| sales               |
+| STUDENT             |
+| STUDENTS            |
+| tab1                |
+| tab2                |
++---------------------+
+15 rows in set (0.004 sec)
+
+mysql> drop table departments;
+Query OK, 0 rows affected (0.008 sec)
+
+mysql> 
+mysql> CREATE TABLE Employees (
+    ->     emp_id INT PRIMARY KEY,
+    ->     name VARCHAR(100),
+    ->     department_id INT,
+    ->     salary DECIMAL(10,2)
+    -> );
+Query OK, 0 rows affected (0.006 sec)
+
+mysql> 
+mysql> CREATE TABLE Departments (
+    ->     department_id INT PRIMARY KEY,
+    ->     department_name VARCHAR(100)
+    -> );
+Query OK, 0 rows affected (0.004 sec)
+
+mysql> 
+mysql> CREATE TABLE Projects (
+    ->     project_id INT PRIMARY KEY,
+    ->     project_name VARCHAR(100),
+    ->     emp_id INT
+    -> );
+Query OK, 0 rows affected (0.006 sec)
+
+mysql> 
+mysql> 
+mysql> 
+mysql> INSERT INTO Departments (department_id, department_name) VALUES
+    -> (1, 'Human Resources'),
+    -> (2, 'Engineering'),
+    -> (3, 'Marketing'),
+    -> (4, 'Finance'),
+    -> (5, 'Operations');
+Query OK, 5 rows affected (0.002 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> 
+mysql> 
+mysql> INSERT INTO Employees (emp_id, name, department_id, salary) VALUES
+    -> (101, 'Arjun', 1, 50000),
+    -> (102, 'Bhavana', 2, 65000),
+    -> (103, 'Charan', 2, 72000),
+    -> (104, 'Divya', 3, 45000),
+    -> (105, 'Eswar', NULL, 40000),
+    -> (106, 'Farhan', 4, 55000),
+    -> (107, 'Gowri', 2, 62000),
+    -> (108, 'Harish', 5, 48000),
+    -> (109, 'Ishita', NULL, 53000),
+    -> (110, 'Jagan', 3, 60000);
+Query OK, 10 rows affected (0.001 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> 
+mysql> 
+mysql> 
+mysql> INSERT INTO Projects (project_id, project_name, emp_id) VALUES
+    -> (201, 'Website Redesign', 102),
+    -> (202, 'Mobile Banking App', 103),
+    -> (203, 'Marketing Campaign', 104),
+    -> (204, 'Payroll System', 106),
+    -> (205, 'Backend Optimization', 107),
+    -> (206, 'Cloud Migration', 102),
+    -> (207, 'Customer Analytics', 110),
+    -> (208, 'Inventory System', NULL);
+Query OK, 8 rows affected (0.005 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+mysql> select * from employees;
++--------+---------+---------------+----------+
+| emp_id | name    | department_id | salary   |
++--------+---------+---------------+----------+
+|    101 | Arjun   |             1 | 50000.00 |
+|    102 | Bhavana |             2 | 65000.00 |
+|    103 | Charan  |             2 | 72000.00 |
+|    104 | Divya   |             3 | 45000.00 |
+|    105 | Eswar   |          NULL | 40000.00 |
+|    106 | Farhan  |             4 | 55000.00 |
+|    107 | Gowri   |             2 | 62000.00 |
+|    108 | Harish  |             5 | 48000.00 |
+|    109 | Ishita  |          NULL | 53000.00 |
+|    110 | Jagan   |             3 | 60000.00 |
++--------+---------+---------------+----------+
+10 rows in set (0.000 sec)
+
+mysql> select * from departments;
++---------------+-----------------+
+| department_id | department_name |
++---------------+-----------------+
+|             1 | Human Resources |
+|             2 | Engineering     |
+|             3 | Marketing       |
+|             4 | Finance         |
+|             5 | Operations      |
++---------------+-----------------+
+5 rows in set (0.000 sec)
+
+mysql> select * from projects;
++------------+----------------------+--------+
+| project_id | project_name         | emp_id |
++------------+----------------------+--------+
+|        201 | Website Redesign     |    102 |
+|        202 | Mobile Banking App   |    103 |
+|        203 | Marketing Campaign   |    104 |
+|        204 | Payroll System       |    106 |
+|        205 | Backend Optimization |    107 |
+|        206 | Cloud Migration      |    102 |
+|        207 | Customer Analytics   |    110 |
+|        208 | Inventory System     |   NULL |
++------------+----------------------+--------+
+8 rows in set (0.000 sec)
+
+mysql> select * from employees inner join select  * from departments where employees.department_id = departents.department_id;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select  * from departments where employees.department_id = departents.department' at line 1
+mysql> select * from employees inner join departments on employees.department_id
+ = departents.department_id;
+ERROR 1054 (42S22): Unknown column 'departents.department_id' in 'on clause'
+mysql> select * from employees inner join departments on employees.department_id = departments.department_id;
++--------+---------+---------------+----------+---------------+-----------------+
+| emp_id | name    | department_id | salary   | department_id | department_name |
++--------+---------+---------------+----------+---------------+-----------------+
+|    101 | Arjun   |             1 | 50000.00 |             1 | Human Resources |
+|    102 | Bhavana |             2 | 65000.00 |             2 | Engineering     |
+|    103 | Charan  |             2 | 72000.00 |             2 | Engineering     |
+|    104 | Divya   |             3 | 45000.00 |             3 | Marketing       |
+|    106 | Farhan  |             4 | 55000.00 |             4 | Finance         |
+|    107 | Gowri   |             2 | 62000.00 |             2 | Engineering     |
+|    108 | Harish  |             5 | 48000.00 |             5 | Operations      |
+|    110 | Jagan   |             3 | 60000.00 |             3 | Marketing       |
++--------+---------+---------------+----------+---------------+-----------------+
+8 rows in set (0.000 sec)
+
+mysql> select emp_id,department_name from employees inner join departments on employees.department_id = departments.department_id;
++--------+-----------------+
+| emp_id | department_name |
++--------+-----------------+
+|    101 | Human Resources |
+|    102 | Engineering     |
+|    103 | Engineering     |
+|    104 | Marketing       |
+|    106 | Finance         |
+|    107 | Engineering     |
+|    108 | Operations      |
+|    110 | Marketing       |
++--------+-----------------+
+8 rows in set (0.000 sec)
+
+mysql> select emp_id from projects inner join employees on projects.emp_id=employees.emp_id;
+ERROR 1052 (23000): Column 'emp_id' in field list is ambiguous
+mysql> select e.emp_id,p.project_name from projects p  inner join employees e on p.emp_id=e.emp_id;
++--------+----------------------+
+| emp_id | project_name         |
++--------+----------------------+
+|    102 | Website Redesign     |
+|    103 | Mobile Banking App   |
+|    104 | Marketing Campaign   |
+|    106 | Payroll System       |
+|    107 | Backend Optimization |
+|    102 | Cloud Migration      |
+|    110 | Customer Analytics   |
++--------+----------------------+
+7 rows in set (0.000 sec)
+
+mysql> select distinct e.emp_id,p.project_name from projects p  inner join employees e on p.emp_id=e.emp_id;
++--------+----------------------+
+| emp_id | project_name         |
++--------+----------------------+
+|    102 | Website Redesign     |
+|    103 | Mobile Banking App   |
+|    104 | Marketing Campaign   |
+|    106 | Payroll System       |
+|    107 | Backend Optimization |
+|    102 | Cloud Migration      |
+|    110 | Customer Analytics   |
++--------+----------------------+
+7 rows in set (0.000 sec)
+
+mysql> select distinct e.emp_id,e.name from employees e  inner join projects p on p.emp_id=e.emp_id;
++--------+---------+
+| emp_id | name    |
++--------+---------+
+|    102 | Bhavana |
+|    103 | Charan  |
+|    104 | Divya   |
+|    106 | Farhan  |
+|    107 | Gowri   |
+|    110 | Jagan   |
++--------+---------+
+6 rows in set (0.001 sec)
+
+mysql> select e.emp_id,e.name,d.department_name
+    -> from employees e
+    -> left join departments d
+    -> on e.department_id=d.department_id;
++--------+---------+-----------------+
+| emp_id | name    | department_name |
++--------+---------+-----------------+
+|    101 | Arjun   | Human Resources |
+|    102 | Bhavana | Engineering     |
+|    103 | Charan  | Engineering     |
+|    104 | Divya   | Marketing       |
+|    105 | Eswar   | NULL            |
+|    106 | Farhan  | Finance         |
+|    107 | Gowri   | Engineering     |
+|    108 | Harish  | Operations      |
+|    109 | Ishita  | NULL            |
+|    110 | Jagan   | Marketing       |
++--------+---------+-----------------+
+10 rows in set (0.000 sec)
+
+mysql> select e.name,p.project_name
+    -> from employees e
+    -> left join projects p
+    -> on e.emp_id=p.emp_id;
++---------+----------------------+
+| name    | project_name         |
++---------+----------------------+
+| Arjun   | NULL                 |
+| Bhavana | Cloud Migration      |
+| Bhavana | Website Redesign     |
+| Charan  | Mobile Banking App   |
+| Divya   | Marketing Campaign   |
+| Eswar   | NULL                 |
+| Farhan  | Payroll System       |
+| Gowri   | Backend Optimization |
+| Harish  | NULL                 |
+| Ishita  | NULL                 |
+| Jagan   | Customer Analytics   |
++---------+----------------------+
+11 rows in set (0.000 sec)
+
+mysql> select d.department_name,e.name
+    -> from departments d
+    -> left join employees e
+    -> on d.department_id=e.department_id;
++-----------------+---------+
+| department_name | name    |
++-----------------+---------+
+| Human Resources | Arjun   |
+| Engineering     | Gowri   |
+| Engineering     | Charan  |
+| Engineering     | Bhavana |
+| Marketing       | Jagan   |
+| Marketing       | Divya   |
+| Finance         | Farhan  |
+| Operations      | Harish  |
++-----------------+---------+
+8 rows in set (0.000 sec)
+
+mysql> select d.department_name,e.name
+    -> from employees e
+    -> right join departments d
+    -> on e.department_id=d.department_id;
++-----------------+---------+
+| department_name | name    |
++-----------------+---------+
+| Human Resources | Arjun   |
+| Engineering     | Gowri   |
+| Engineering     | Charan  |
+| Engineering     | Bhavana |
+| Marketing       | Jagan   |
+| Marketing       | Divya   |
+| Finance         | Farhan  |
+| Operations      | Harish  |
++-----------------+---------+
+8 rows in set (0.000 sec)
+
+mysql> select p.project_name,e.name
+    -> from employees e
+    -> right join projects p
+    -> on e.emp_id=p.emp_id;
++----------------------+---------+
+| project_name         | name    |
++----------------------+---------+
+| Website Redesign     | Bhavana |
+| Mobile Banking App   | Charan  |
+| Marketing Campaign   | Divya   |
+| Payroll System       | Farhan  |
+| Backend Optimization | Gowri   |
+| Cloud Migration      | Bhavana |
+| Customer Analytics   | Jagan   |
+| Inventory System     | NULL    |
++----------------------+---------+
+8 rows in set (0.000 sec)
+
+mysql> select e.name,d.department_name from departments d
+    -> right join employees e on d.department_id=e.department_id;
++---------+-----------------+
+| name    | department_name |
++---------+-----------------+
+| Arjun   | Human Resources |
+| Bhavana | Engineering     |
+| Charan  | Engineering     |
+| Divya   | Marketing       |
+| Eswar   | NULL            |
+| Farhan  | Finance         |
+| Gowri   | Engineering     |
+| Harish  | Operations      |
+| Ishita  | NULL            |
+| Jagan   | Marketing       |
++---------+-----------------+
+10 rows in set (0.000 sec)
