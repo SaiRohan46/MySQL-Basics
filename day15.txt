@@ -1,0 +1,469 @@
++--------+----------+----------+---------+--------------+------------+
+| emp_id | emp_name | salary   | dept_id | job          | hire_date  |
++--------+----------+----------+---------+--------------+------------+
+|    101 | Amit     | 60000.00 |       2 | Developer    | 2021-06-12 |
+|    102 | Ravi     | 75000.00 |       2 | Manager      | 2020-03-15 |
+|    103 | Sneha    | 55000.00 |       1 | HR Executive | 2022-01-20 |
+|    104 | Priya    | 90000.00 |       3 | Accountant   | 2019-07-10 |
+|    105 | Vikas    | 50000.00 |       4 | Sales Exec   | 2022-05-30 |
+|    106 | Anjali   | 80000.00 |       2 | Developer    | 2021-08-25 |
+|    107 | Manoj    | 95000.00 |       3 | Manager      | 2018-11-05 |
++--------+----------+----------+---------+--------------+------------+
++---------+-----------+-----------+
+| dept_id | dept_name | location  |
++---------+-----------+-----------+
+|       1 | HR        | Hyderabad |
+|       2 | IT        | Bangalore |
+|       3 | Finance   | Mumbai    |
+|       4 | Marketing | Delhi     |
++---------+-----------+-----------+
++---------+-------------------+---------+------------+
+| proj_id | proj_name         | dept_id | budget     |
++---------+-------------------+---------+------------+
+|     201 | ERP System        |       2 | 1500000.00 |
+|     202 | Recruitment Drive |       1 |  300000.00 |
+|     203 | Annual Report     |       3 |  500000.00 |
+|     204 | Ad Campaign       |       4 |  700000.00 |
+|     205 | Mobile App        |       2 | 1200000.00 |
++---------+-------------------+---------+------------+
+mysql> -- query 1 - find the country with largest population
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> -- query 2 - find the cities in the sam country as new york
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> -- query 3 - find the countries with population greater than india
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> -- query 4 - find the capital city of brazil
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> -- query 5 - find countries in the same continent as japan
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> -- query 1 -- employees with salary greater than any it employee
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> -- query 2 -- employees hired before any finance employee
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> -- query 3 --  employees earning more than any marketing employee
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> -- query 4 -- employees with budget greater than any it project
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> -- query 5  -- employees whose salary < any hr employee salary
+Query OK, 0 rows affected (0.000 sec)
+mysql> use pfs3;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> show tables;
++-----------------+
+| Tables_in_pfs3  |
++-----------------+
+| city            |
+| country         |
+| countrylanguage |
+| Department      |
+| employee        |
+| Project         |
++-----------------+
+6 rows in set (0.003 sec)
+
+mysql> select 
+    -> * from employee;
++--------+----------+------+------------+----------+---------+------------+-------------------+
+| emp_id | emp_name | age  | department | salary   | bonus   | experience | performance_score |
++--------+----------+------+------------+----------+---------+------------+-------------------+
+|    101 | Rahul    |   25 | IT         | 35000.75 | 2500.50 |       2.50 |             85.45 |
+|    102 | Anjali   |   30 | HR         | 42000.80 | 3200.75 |       5.80 |             91.65 |
+|    103 | Ramesh   |   27 | Sales      | 38000.60 | 2100.90 |       3.20 |             74.55 |
+|    104 | Priya    |   35 | Finance    | 55000.90 | 5000.25 |       8.70 |             95.80 |
+|    105 | Arjun    |   29 | IT         | 46000.50 | 3500.60 |       4.60 |             82.45 |
+|    106 | Sneha    |   24 | HR         | 32000.20 | 1800.40 |       1.80 |             69.85 |
+|    107 | Kiran    |   32 | Sales      | 50000.90 | 4200.30 |       6.50 |             88.90 |
+|    108 | Deepika  |   28 | Finance    | 41000.75 | 3000.50 |       4.20 |             79.65 |
+|    109 | Mahesh   |   40 | IT         | 68000.40 | 6500.75 |      12.50 |             97.20 |
+|    110 | Divya    |   26 | HR         | 36000.85 | 2400.25 |       2.90 |             76.40 |
++--------+----------+------+------------+----------+---------+------------+-------------------+
+10 rows in set (0.002 sec)
+
+mysql> select * from department;
++---------+-----------+-----------+
+| dept_id | dept_name | location  |
++---------+-----------+-----------+
+|       1 | HR        | Hyderabad |
+|       2 | IT        | Bangalore |
+|       3 | Finance   | Mumbai    |
+|       4 | Marketing | Delhi     |
++---------+-----------+-----------+
+4 rows in set (0.000 sec)
+
+mysql> select * from project;
++---------+-------------------+---------+------------+
+| proj_id | proj_name         | dept_id | budget     |
++---------+-------------------+---------+------------+
+|     201 | ERP System        |       2 | 1500000.00 |
+|     202 | Recruitment Drive |       1 |  300000.00 |
+|     203 | Annual Report     |       3 |  500000.00 |
+|     204 | Ad Campaign       |       4 |  700000.00 |
+|     205 | Mobile App        |       2 | 1200000.00 |
++---------+-------------------+---------+------------+
+5 rows in set (0.000 sec)
+
+mysql> select avg(salary) from employee;
++--------------+
+| avg(salary)  |
++--------------+
+| 44300.665000 |
++--------------+
+1 row in set (0.006 sec)
+
+mysql> drop table employee;
+Query OK, 0 rows affected (0.049 sec)
+
+mysql> CREATE TABLE Employee (
+    ->     emp_id INT PRIMARY KEY,
+    ->     emp_name VARCHAR(50),
+    ->     salary DECIMAL(10,2),
+    ->     dept_id INT,
+    ->     job VARCHAR(50),
+    ->     hire_date DATE,
+    ->     FOREIGN KEY (dept_id) REFERENCES Department(dept_id)
+    -> );
+Query OK, 0 rows affected (0.027 sec)
+
+mysql> INSERT INTO Employee VALUES
+    -> (101, 'Amit', 60000, 2, 'Developer', '2021-06-12'),
+    -> (102, 'Ravi', 75000, 2, 'Manager', '2020-03-15'),
+    -> (103, 'Sneha', 55000, 1, 'HR Executive', '2022-01-20'),
+    -> (104, 'Priya', 90000, 3, 'Accountant', '2019-07-10'),
+    -> (105, 'Vikas', 50000, 4, 'Sales Exec', '2022-05-30'),
+    -> (106, 'Anjali', 80000, 2, 'Developer', '2021-08-25'),
+    -> (107, 'Manoj', 95000, 3, 'Manager', '2018-11-05');
+Query OK, 7 rows affected (0.006 sec)
+Records: 7  Duplicates: 0  Warnings: 0
+
+mysql> --single row sub query
+    -> \c
+mysql> select emp_name from employee where salary>(select avg(salary)from employee);
++----------+
+| emp_name |
++----------+
+| Ravi     |
+| Priya    |
+| Anjali   |
+| Manoj    |
++----------+
+4 rows in set (0.004 sec)
+
+mysql> -- employee name in the same department as ravi
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> select * from employee;
++--------+----------+----------+---------+--------------+------------+
+| emp_id | emp_name | salary   | dept_id | job          | hire_date  |
++--------+----------+----------+---------+--------------+------------+
+|    101 | Amit     | 60000.00 |       2 | Developer    | 2021-06-12 |
+|    102 | Ravi     | 75000.00 |       2 | Manager      | 2020-03-15 |
+|    103 | Sneha    | 55000.00 |       1 | HR Executive | 2022-01-20 |
+|    104 | Priya    | 90000.00 |       3 | Accountant   | 2019-07-10 |
+|    105 | Vikas    | 50000.00 |       4 | Sales Exec   | 2022-05-30 |
+|    106 | Anjali   | 80000.00 |       2 | Developer    | 2021-08-25 |
+|    107 | Manoj    | 95000.00 |       3 | Manager      | 2018-11-05 |
++--------+----------+----------+---------+--------------+------------+
+7 rows in set (0.001 sec)
+
+mysql> select emp_name from employee where dept_id=(select dept_id from employee where emp_name='Ravi');
++----------+
+| emp_name |
++----------+
+| Amit     |
+| Ravi     |
+| Anjali   |
++----------+
+3 rows in set (0.004 sec)
+
+mysql> select * from country;
++------+----------------+---------------+---------------------------+------------+----------------+-------------+---------+
+| Code | Name           | Continent     | Region                    | Population | LifeExpectancy | GNP         | Capital |
++------+----------------+---------------+---------------------------+------------+----------------+-------------+---------+
+| ARG  | Argentina      | South America | South America             |   45800000 |           76.7 |   630000.00 |      81 |
+| AUS  | Australia      | Oceania       | Australia and New Zealand |   26600000 |           83.3 |  1690000.00 |      91 |
+| BEL  | Belgium        | Europe        | Western Europe            |   11600000 |           82.0 |   590000.00 |      20 |
+| BGD  | Bangladesh     | Asia          | Southern and Central Asia |  172000000 |           72.0 |   460000.00 |      59 |
+| BRA  | Brazil         | South America | South America             |  216400000 |           75.9 |  1920000.00 |      78 |
+| CAN  | Canada         | North America | North America             |   38900000 |           82.4 |  2140000.00 |      73 |
+| CHL  | Chile          | South America | South America             |   19600000 |           80.2 |   317000.00 |      87 |
+| CHN  | China          | Asia          | Eastern Asia              | 1412000000 |           78.2 | 17960000.00 |      46 |
+| COL  | Colombia       | South America | South America             |   52200000 |           73.0 |   343000.00 |      83 |
+| DEU  | Germany        | Europe        | Western Europe            |   83200000 |           81.0 |  4260000.00 |       1 |
+| DZA  | Algeria        | Africa        | Northern Africa           |   45400000 |           77.1 |   195000.00 |      44 |
+| EGY  | Egypt          | Africa        | Northern Africa           |  112700000 |           71.8 |   435000.00 |      32 |
+| ESP  | Spain          | Europe        | Southern Europe           |   47400000 |           83.5 |  1430000.00 |      13 |
+| ETH  | Ethiopia       | Africa        | Eastern Africa            |  126500000 |           66.2 |   126000.00 |      39 |
+| FRA  | France         | Europe        | Western Europe            |   68000000 |           82.5 |  2780000.00 |       4 |
+| GBR  | United Kingdom | Europe        | British Isles             |   67300000 |           81.2 |  3130000.00 |       7 |
+| GHA  | Ghana          | Africa        | Western Africa            |   33500000 |           64.6 |    77000.00 |      40 |
+| GRC  | Greece         | Europe        | Southern Europe           |   10400000 |           81.9 |   210000.00 |      26 |
+| IDN  | Indonesia      | Asia          | Southeast Asia            |  277500000 |           68.0 |  1320000.00 |      54 |
+| IND  | India          | Asia          | Southern and Central Asia | 1428000000 |           70.2 |  3730000.00 |      49 |
+| ITA  | Italy          | Europe        | Southern Europe           |   59000000 |           83.2 |  2010000.00 |      10 |
+| JPN  | Japan          | Asia          | Eastern Asia              |  123300000 |           84.5 |  4230000.00 |      52 |
+| KEN  | Kenya          | Africa        | Eastern Africa            |   55100000 |           66.7 |   113000.00 |      37 |
+| KOR  | South Korea    | Asia          | Eastern Asia              |   51700000 |           83.5 |  1670000.00 |      65 |
+| MAR  | Morocco        | Africa        | Northern Africa           |   37800000 |           74.0 |   135000.00 |      42 |
+| MCO  | Monaco         | Europe        | Southern Europe           |      39000 |           85.9 |     7500.00 |      28 |
+| MEX  | Mexico         | North America | Central America           |  128900000 |           70.7 |  1420000.00 |      76 |
+| NGA  | Nigeria        | Africa        | Western Africa            |  223800000 |           55.8 |   477000.00 |      29 |
+| NLD  | Netherlands    | Europe        | Western Europe            |   17700000 |           82.3 |   990000.00 |      18 |
+| NZL  | New Zealand    | Oceania       | Australia and New Zealand |    5200000 |           82.5 |   250000.00 |      94 |
+| PAK  | Pakistan       | Asia          | Southern and Central Asia |  240500000 |           66.6 |   375000.00 |      56 |
+| PER  | Peru           | South America | South America             |   34400000 |           72.9 |   242000.00 |      85 |
+| POL  | Poland         | Europe        | Eastern Europe            |   37700000 |           78.0 |   690000.00 |      16 |
+| PRT  | Portugal       | Europe        | Southern Europe           |   10300000 |           82.1 |   250000.00 |      24 |
+| SAU  | Saudi Arabia   | Asia          | Middle East               |   36900000 |           76.9 |  1010000.00 |      67 |
+| SWE  | Sweden         | Europe        | Nordic Countries          |   10500000 |           83.0 |   590000.00 |      22 |
+| THA  | Thailand       | Asia          | Southeast Asia            |   71800000 |           79.3 |   495000.00 |      63 |
+| USA  | United States  | North America | North America             |  339900000 |           79.3 | 25460000.00 |      69 |
+| VEN  | Venezuela      | South America | South America             |   28300000 |           72.1 |    90000.00 |      89 |
+| VNM  | Vietnam        | Asia          | Southeast Asia            |   98900000 |           73.6 |   410000.00 |      61 |
+| ZAF  | South Africa   | Africa        | Southern Africa           |   60400000 |           65.3 |   405000.00 |      34 |
++------+----------------+---------------+---------------------------+------------+----------------+-------------+---------+
+41 rows in set (0.000 sec)
+
+mysql> -- query 1 - find the country with largest population
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> -- query 2 - find the cities in the sam country as new york
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> -- query 3 - find the countries with population greater than india
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> -- query 4 - find the capital city of brazil
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> -- query 5 - find countries in the same continent as japan
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> select * from city;
++----+------------------+-------------+------------------------------+------------+
+| ID | Name             | CountryCode | District                     | Population |
++----+------------------+-------------+------------------------------+------------+
+|  1 | Berlin           | DEU         | Berlin                       |    3677000 |
+|  2 | Hamburg          | DEU         | Hamburg                      |    1900000 |
+|  3 | Munich           | DEU         | Bavaria                      |    1500000 |
+|  4 | Paris            | FRA         | Ile-de-France                |    2140000 |
+|  5 | Marseille        | FRA         | PACA                         |     870000 |
+|  6 | Lyon             | FRA         | Auvergne-Rhone-Alpes         |     520000 |
+|  7 | London           | GBR         | England                      |    8980000 |
+|  8 | Birmingham       | GBR         | England                      |    1145000 |
+|  9 | Manchester       | GBR         | England                      |     553000 |
+| 10 | Rome             | ITA         | Lazio                        |    2870000 |
+| 11 | Milan            | ITA         | Lombardy                     |    1370000 |
+| 12 | Naples           | ITA         | Campania                     |     950000 |
+| 13 | Madrid           | ESP         | Madrid                       |    3280000 |
+| 14 | Barcelona        | ESP         | Catalonia                    |    1620000 |
+| 15 | Valencia         | ESP         | Valencia                     |     800000 |
+| 16 | Warsaw           | POL         | Masovian                     |    1860000 |
+| 17 | Krakow           | POL         | Lesser Poland                |     780000 |
+| 18 | Amsterdam        | NLD         | North Holland                |     905000 |
+| 19 | Rotterdam        | NLD         | South Holland                |     656000 |
+| 20 | Brussels         | BEL         | Brussels                     |    1220000 |
+| 21 | Antwerp          | BEL         | Antwerp                      |     530000 |
+| 22 | Stockholm        | SWE         | Stockholm                    |     980000 |
+| 23 | Gothenburg       | SWE         | Vastra Gotaland              |     580000 |
+| 24 | Lisbon           | PRT         | Lisbon                       |     545000 |
+| 25 | Porto            | PRT         | Porto                        |     230000 |
+| 26 | Athens           | GRC         | Attica                       |     660000 |
+| 27 | Thessaloniki     | GRC         | Central Macedonia            |     320000 |
+| 28 | Monaco-Ville     | MCO         | Monaco                       |       1300 |
+| 29 | Abuja            | NGA         | Federal Capital Territory    |    1780000 |
+| 30 | Lagos            | NGA         | Lagos                        |   15400000 |
+| 31 | Kano             | NGA         | Kano                         |    4100000 |
+| 32 | Cairo            | EGY         | Cairo                        |   10100000 |
+| 33 | Alexandria       | EGY         | Alexandria                   |    5280000 |
+| 34 | Pretoria         | ZAF         | Gauteng                      |    2470000 |
+| 35 | Johannesburg     | ZAF         | Gauteng                      |    5780000 |
+| 36 | Cape Town        | ZAF         | Western Cape                 |    4710000 |
+| 37 | Nairobi          | KEN         | Nairobi                      |    4400000 |
+| 38 | Mombasa          | KEN         | Mombasa                      |    1300000 |
+| 39 | Addis Ababa      | ETH         | Addis Ababa                  |    5230000 |
+| 40 | Accra            | GHA         | Greater Accra                |    2560000 |
+| 41 | Kumasi           | GHA         | Ashanti                      |    3350000 |
+| 42 | Rabat            | MAR         | Rabat-Sale                   |     580000 |
+| 43 | Casablanca       | MAR         | Casablanca-Settat            |    3750000 |
+| 44 | Algiers          | DZA         | Algiers                      |    2760000 |
+| 45 | Oran             | DZA         | Oran                         |     850000 |
+| 46 | Beijing          | CHN         | Beijing                      |   21890000 |
+| 47 | Shanghai         | CHN         | Shanghai                     |   24870000 |
+| 48 | Shenzhen         | CHN         | Guangdong                    |   17560000 |
+| 49 | New Delhi        | IND         | Delhi                        |   34700000 |
+| 50 | Mumbai           | IND         | Maharashtra                  |   21300000 |
+| 51 | Bengaluru        | IND         | Karnataka                    |   13600000 |
+| 52 | Tokyo            | JPN         | Tokyo                        |   37400000 |
+| 53 | Osaka            | JPN         | Osaka                        |   19100000 |
+| 54 | Jakarta          | IDN         | Jakarta                      |   10900000 |
+| 55 | Surabaya         | IDN         | East Java                    |    2870000 |
+| 56 | Islamabad        | PAK         | Islamabad                    |    1140000 |
+| 57 | Karachi          | PAK         | Sindh                        |   16800000 |
+| 58 | Lahore           | PAK         | Punjab                       |   13000000 |
+| 59 | Dhaka            | BGD         | Dhaka                        |   22400000 |
+| 60 | Chittagong       | BGD         | Chittagong                   |    5200000 |
+| 61 | Hanoi            | VNM         | Hanoi                        |    8400000 |
+| 62 | Ho Chi Minh City | VNM         | Ho Chi Minh                  |    9300000 |
+| 63 | Bangkok          | THA         | Bangkok                      |   10700000 |
+| 64 | Chiang Mai       | THA         | Chiang Mai                   |    1200000 |
+| 65 | Seoul            | KOR         | Seoul                        |    9500000 |
+| 66 | Busan            | KOR         | Busan                        |    3400000 |
+| 67 | Riyadh           | SAU         | Riyadh                       |    7680000 |
+| 68 | Jeddah           | SAU         | Makkah                       |    4780000 |
+| 69 | Washington       | USA         | District of Columbia         |     690000 |
+| 70 | New York         | USA         | New York                     |    8800000 |
+| 71 | Los Angeles      | USA         | California                   |    3900000 |
+| 72 | Chicago          | USA         | Illinois                     |    2700000 |
+| 73 | Ottawa           | CAN         | Ontario                      |    1070000 |
+| 74 | Toronto          | CAN         | Ontario                      |    2930000 |
+| 75 | Vancouver        | CAN         | British Columbia             |     675000 |
+| 76 | Mexico City      | MEX         | Distrito Federal             |    9200000 |
+| 77 | Guadalajara      | MEX         | Jalisco                      |    1500000 |
+| 78 | Brasilia         | BRA         | Distrito Federal             |    3100000 |
+| 79 | Sao Paulo        | BRA         | Sao Paulo                    |   12300000 |
+| 80 | Rio de Janeiro   | BRA         | Rio de Janeiro               |    6750000 |
+| 81 | Buenos Aires     | ARG         | Buenos Aires                 |    3080000 |
+| 82 | Cordoba          | ARG         | Cordoba                      |    1450000 |
+| 83 | Bogota           | COL         | Bogota                       |    7970000 |
+| 84 | Medellin         | COL         | Antioquia                    |    2530000 |
+| 85 | Lima             | PER         | Lima                         |    9700000 |
+| 86 | Arequipa         | PER         | Arequipa                     |    1080000 |
+| 87 | Santiago         | CHL         | Santiago                     |    6270000 |
+| 88 | Valparaiso       | CHL         | Valparaiso                   |     300000 |
+| 89 | Caracas          | VEN         | Distrito Capital             |    2900000 |
+| 90 | Maracaibo        | VEN         | Zulia                        |    1650000 |
+| 91 | Canberra         | AUS         | Australian Capital Territory |     470000 |
+| 92 | Sydney           | AUS         | New South Wales              |    5310000 |
+| 93 | Melbourne        | AUS         | Victoria                     |    5150000 |
+| 94 | Wellington       | NZL         | Wellington                   |     215000 |
+| 95 | Auckland         | NZL         | Auckland                     |    1700000 |
++----+------------------+-------------+------------------------------+------------+
+95 rows in set (0.000 sec)
+
+mysql> select name,population from country where population=(select max(population) from country);
++-------+------------+
+| name  | population |
++-------+------------+
+| India | 1428000000 |
++-------+------------+
+1 row in set (0.003 sec)
+
+mysql> select name,population from city
+    -> where countrycode=(select countrycode from city where name='new york');
++-------------+------------+
+| name        | population |
++-------------+------------+
+| Washington  |     690000 |
+| New York    |    8800000 |
+| Los Angeles |    3900000 |
+| Chicago     |    2700000 |
++-------------+------------+
+4 rows in set (0.001 sec)
+
+mysql> select name from city where id=(select capital from country where name='Brazil');
++----------+
+| name     |
++----------+
+| Brasilia |
++----------+
+1 row in set (0.000 sec)
+
+mysql> select name from country where continent=(select continent from country where name='japan');
++--------------+
+| name         |
++--------------+
+| Bangladesh   |
+| China        |
+| Indonesia    |
+| India        |
+| Japan        |
+| South Korea  |
+| Pakistan     |
+| Saudi Arabia |
+| Thailand     |
+| Vietnam      |
++--------------+
+10 rows in set (0.000 sec)
+
+mysql> -- query 1 -- employees with salary greater than any it employee
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> select salary,emp_name from employee where salary>ANY(select salary from employee where dept_id='2');
++----------+----------+
+| salary   | emp_name |
++----------+----------+
+| 75000.00 | Ravi     |
+| 90000.00 | Priya    |
+| 80000.00 | Anjali   |
+| 95000.00 | Manoj    |
++----------+----------+
+4 rows in set (0.004 sec)
+
+mysql> select salary,emp_name from employee where salary>ANY(select salary from employee where (select dept_id from department where dept_name='IT');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> select salary,emp_name from employee where salary>ANY(select salary from employee where (select dept_id from department where dept_name='IT'));
++----------+----------+
+| salary   | emp_name |
++----------+----------+
+| 60000.00 | Amit     |
+| 75000.00 | Ravi     |
+| 55000.00 | Sneha    |
+| 90000.00 | Priya    |
+| 80000.00 | Anjali   |
+| 95000.00 | Manoj    |
++----------+----------+
+6 rows in set (0.000 sec)
+
+mysql> -- query 2 -- employees hired before any finance eployee
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> -- query 3 --  employees earning more than any marketing employee
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> -- query 4 -- employees with budget greater than any it project
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> -- query 5  -- employees whose salary < any hr employee salary
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> selecr emp_name from employee where hire_date<ANY(select hire_date from employee where dept_name=(select dept_name from department where dept_name='Finance'));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'selecr emp_name from employee where hire_date<ANY(select hire_date from employee' at line 1
+mysql> selecr emp_name from employee where hire_date<ANY(select hire_date from employee where dept_name='Finance');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'selecr emp_name from employee where hire_date<ANY(select hire_date from employee' at line 1
+mysql> selecr emp_name,hire_date from employee where hire_date<ANY(select hire_date from employee where dept_id='3');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'selecr emp_name,hire_date from employee where hire_date<ANY(select hire_date fro' at line 1
+mysql> select emp_name,hire_date from employee where hire_date<ANY(select hire_date from employee where dept_id='3');
++----------+------------+
+| emp_name | hire_date  |
++----------+------------+
+| Manoj    | 2018-11-05 |
++----------+------------+
+1 row in set (0.002 sec)
+
+mysql> -- employees  earning more than avg salary of it department 
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> select emp_name,salary
+    -> from employee
+    -> where salary>(select avg(salary) from employee where dept_id=(select dept_id from department where dept_name='it'));
++----------+----------+
+| emp_name | salary   |
++----------+----------+
+| Ravi     | 75000.00 |
+| Priya    | 90000.00 |
+| Anjali   | 80000.00 |
+| Manoj    | 95000.00 |
++----------+----------+
+4 rows in set (0.000 sec)
