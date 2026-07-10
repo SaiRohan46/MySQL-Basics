@@ -1,0 +1,463 @@
++--------+----------+----------+---------+--------------+------------+
+| emp_id | emp_name | salary   | dept_id | job          | hire_date  |
++--------+----------+----------+---------+--------------+------------+
+|    101 | Amit     | 60000.00 |       2 | Developer    | 2021-06-12 |
+|    102 | Ravi     | 75000.00 |       2 | Manager      | 2020-03-15 |
+|    103 | Sneha    | 55000.00 |       1 | HR Executive | 2022-01-20 |
+|    104 | Priya    | 90000.00 |       3 | Accountant   | 2019-07-10 |
+|    105 | Vikas    | 50000.00 |       4 | Sales Exec   | 2022-05-30 |
+|    106 | Anjali   | 80000.00 |       2 | Developer    | 2021-08-25 |
+|    107 | Manoj    | 95000.00 |       3 | Manager      | 2018-11-05 |
++--------+----------+----------+---------+--------------+------------+
++---------+-------------------+---------+------------+
+| proj_id | proj_name         | dept_id | budget     |
++---------+-------------------+---------+------------+
+|     201 | ERP System        |       2 | 1500000.00 |
+|     202 | Recruitment Drive |       1 |  300000.00 |
+|     203 | Annual Report     |       3 |  500000.00 |
+|     204 | Ad Campaign       |       4 |  700000.00 |
+|     205 | Mobile App        |       2 | 1200000.00 |
++---------+-------------------+---------+------------+
++---------+-----------+-----------+
+| dept_id | dept_name | location  |
++---------+-----------+-----------+
+|       1 | HR        | Hyderabad |
+|       2 | IT        | Bangalore |
+|       3 | Finance   | Mumbai    |
+|       4 | Marketing | Delhi     |
++---------+-----------+-----------+
+mysql> -- department with employee count>2
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> -- project with budget greater than average budget of the department
+Query OK, 0 rows affected (0.000 sec)
+
+----- VIEWS ---------
+--> WHAT IS VIEW ??
+-------------------
+A view is a virtual table in MySQL built from the result of a stored select statement it looks and behaves like regular table when you query it you can select a column from it filter it , join it but it doesn't store any data of its own every time a view is queried MySQL runs its underlying select statement against the real tables and returns the results.
+
+-> Think of view as a saved, reusable query with a name, instead of typing out a long join every time, you can create the view once and simply run.
+
+Why do we need VIEWS
+---------------------
+1. Simplify complex queries
+2. Reuse query Logic
+3. Data Security
+4. Different Perspectives of same data
+5. Simplified reporting
+
+Advantages of VIEWS
+-------------------
+1. Security
+2. Simplicity
+3. Reusability
+4. Maintainability
+5. No extra storage cost
+6. Custom data Presentation
+
+Creating VIEWS
+-----------------
+Create view view_name as
+Select columns from tables
+Where condition;
+
+Altering VIEWS
+-----------------
+Alter view view_name as
+Select new_columns
+From new_tables
+Where new condition;
+
+Drop VIEWS
+-----------------
+Drop view view_name;
+
+mysql> -- 1. employees earning more than avg salary of thier department
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> show tables;
+ERROR 1046 (3D000): No database selected
+mysql> use pfs3;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> show tables;
++-----------------+
+| Tables_in_pfs3  |
++-----------------+
+| city            |
+| country         |
+| countrylanguage |
+| Department      |
+| Employee        |
+| Project         |
++-----------------+
+6 rows in set (0.001 sec)
+
+mysql> select emp_name,salary from employee e where salary(select avg(salary)from employee where dept_id=e.dept_id);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select avg(salary)from employee where dept_id=e.dept_id)' at line 1
+mysql> select emp_name,salary from employee e where salary>(select avg(salary)from employee where dept_id=e.dept_id);
++----------+----------+
+| emp_name | salary   |
++----------+----------+
+| Ravi     | 75000.00 |
+| Anjali   | 80000.00 |
+| Manoj    | 95000.00 |
++----------+----------+
+3 rows in set (0.007 sec)
+
+mysql> -- department 
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> -- department with employee count>2
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> -- project with budget greater than average budget of the department
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> select * from employee;
++--------+----------+----------+---------+--------------+------------+
+| emp_id | emp_name | salary   | dept_id | job          | hire_date  |
++--------+----------+----------+---------+--------------+------------+
+|    101 | Amit     | 60000.00 |       2 | Developer    | 2021-06-12 |
+|    102 | Ravi     | 75000.00 |       2 | Manager      | 2020-03-15 |
+|    103 | Sneha    | 55000.00 |       1 | HR Executive | 2022-01-20 |
+|    104 | Priya    | 90000.00 |       3 | Accountant   | 2019-07-10 |
+|    105 | Vikas    | 50000.00 |       4 | Sales Exec   | 2022-05-30 |
+|    106 | Anjali   | 80000.00 |       2 | Developer    | 2021-08-25 |
+|    107 | Manoj    | 95000.00 |       3 | Manager      | 2018-11-05 |
++--------+----------+----------+---------+--------------+------------+
+7 rows in set (0.001 sec)
+
+mysql> select * from project;
++---------+-------------------+---------+------------+
+| proj_id | proj_name         | dept_id | budget     |
++---------+-------------------+---------+------------+
+|     201 | ERP System        |       2 | 1500000.00 |
+|     202 | Recruitment Drive |       1 |  300000.00 |
+|     203 | Annual Report     |       3 |  500000.00 |
+|     204 | Ad Campaign       |       4 |  700000.00 |
+|     205 | Mobile App        |       2 | 1200000.00 |
++---------+-------------------+---------+------------+
+5 rows in set (0.002 sec)
+
+mysql> select  
+    -> * from department;
++---------+-----------+-----------+
+| dept_id | dept_name | location  |
++---------+-----------+-----------+
+|       1 | HR        | Hyderabad |
+|       2 | IT        | Bangalore |
+|       3 | Finance   | Mumbai    |
+|       4 | Marketing | Delhi     |
++---------+-----------+-----------+
+4 rows in set (0.002 sec)
+
+mysql> select dept_name from department where(select count(emp_id) from employee group by employee.dept_id=department.dept_id);
+ERROR 1242 (21000): Subquery returns more than 1 row
+mysql> select dept_name from department where(select count(emp_id) from employee group by employee.dept_id=department.dept_id having count(emp_id)>2);
+ERROR 1242 (21000): Subquery returns more than 1 row
+mysql> select dept_name from department where(select count(emp_id) from employee where employee.dept_id=department.dept_id)>2;
++-----------+
+| dept_name |
++-----------+
+| IT        |
++-----------+
+1 row in set (0.000 sec)
+
+mysql> -- departments without employees
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> select dept_name from department d
+    -> where not exists(select 1 from employee e where e.dept_id=d.dept_id);
+Empty set (0.003 sec)
+
+mysql> select dept_name from department d where exists(select 1 from employee e
+where e.dept_id=d.dept_id);
++-----------+
+| dept_name |
++-----------+
+| HR        |
+| IT        |
+| Finance   |
+| Marketing |
++-----------+
+4 rows in set (0.001 sec)
+
+mysql> select max(salary) from employee;
++-------------+
+| max(salary) |
++-------------+
+|    95000.00 |
++-------------+
+1 row in set (0.001 sec)
+
+mysql> select max(salary) as second_max_salary from employee where salary<(selct max(salary) from employee);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'max(salary) from employee)' at line 1
+mysql> select max(salary) as second_max_salary from employee where salary<(select max(salary) from employee);
++-------------------+
+| second_max_salary |
++-------------------+
+|          90000.00 |
++-------------------+
+1 row in set (0.000 sec)
+
+mysql> select max(salary)as third_max from employee where(select max(salary) as
+second_max_salary from employee where salary<(select max(salary) from employee)
+);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 1
+mysql> select max(salary)as third_max from employee where salary<(select max(sal
+ary) as second_max_salary from employee where salary<(select max(salary) from employee););
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 1
+mysql> select max(salary)as third_max from employee where salary<(select max(salary) as second_max_salary from employee where salary<(select max(salary) from employee));
++-----------+
+| third_max |
++-----------+
+|  80000.00 |
++-----------+
+1 row in set (0.001 sec)
+
+mysql> select min(salary)as third_min from employee where salary>(select min(salary) as second_min_salary from employee where salary>(select min(salary) from employee));
++-----------+
+| third_min |
++-----------+
+|  60000.00 |
++-----------+
+1 row in set (0.001 sec)
+
+mysql> select max(salary) from employee group by dept_id :
+    -> \c
+mysql> select max(salary) from employee group by dept_id ;
++-------------+
+| max(salary) |
++-------------+
+|    55000.00 |
+|    80000.00 |
+|    95000.00 |
+|    50000.00 |
++-------------+
+4 rows in set (0.003 sec)
+
+mysql> select max(salary),dept_name from employee join department on employee.dept_id=department.dept_id  group by dept_id ;
+ERROR 1052 (23000): Column 'dept_id' in group statement is ambiguous
+mysql> select max(salary),dept_name from employee join department on employee.dept_id=department.dept_id  group by department.dept_id ;
++-------------+-----------+
+| max(salary) | dept_name |
++-------------+-----------+
+|    55000.00 | HR        |
+|    80000.00 | IT        |
+|    95000.00 | Finance   |
+|    50000.00 | Marketing |
++-------------+-----------+
+4 rows in set (0.000 sec)
+
+mysql> select max(salary),dept_name from employee where salary<(select max(salar
+y),dept_name from employee)
+d  group by department.dept_id ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'join department on employee.dept_id=department.dept_id  group by demysql> \c
+mysql> select d.dept_name,min(e.salary) as second_min
+    -> from employee e
+    -> join department d on e.dept_id=d.dept_id
+    -> where e.salary>(select min(salary) from employee e2 where e2.dept_id=.e.dept_id) group by d.dept_name;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '.e.dept_id) group by d.dept_name' at line 4
+mysql> select d.dept_name,min(e.salary) as second_min from employee e join department d on e.dept_id=d.dept_id where e.salary>(select min(salary) from employee e2 where e2.dept_id=e.dept_id) group by d.dept_name;
++-----------+------------+
+| dept_name | second_min |
++-----------+------------+
+| IT        |   75000.00 |
+| Finance   |   95000.00 |
++-----------+------------+
+2 rows in set (0.002 sec)
+
+mysql> create database jfs2;
+Query OK, 1 row affected (0.008 sec)
+
+mysql> use jfs2;
+Database changed
+mysql> CREATE TABLE departments (
+    -> dept_id INT PRIMARY KEY AUTO_INCREMENT,
+    -> dept_name VARCHAR(50),
+    -> location VARCHAR(50)
+    -> );
+Query OK, 0 rows affected (0.010 sec)
+
+mysql>  
+    -> CREATE TABLE employees (
+    -> emp_id INT PRIMARY KEY AUTO_INCREMENT,
+    -> emp_name VARCHAR(100),
+    -> dept_id INT,
+    -> designation VARCHAR(50),
+    -> salary DECIMAL(10,2),
+    -> join_date DATE,
+    -> FOREIGN KEY (dept_id) REFERENCES departments(dept_id)
+    -> );
+Query OK, 0 rows affected (0.007 sec)
+
+mysql> INSERT INTO departments (dept_name, location) VALUES
+    -> ('IT','Hyderabad'), ('HR','Bangalore'), ('Finance','Chennai'), ('Sales','Mumbai');
+Query OK, 4 rows affected (0.006 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql>  
+    -> INSERT INTO employees (emp_name, dept_id, designation, salary, join_date) VALUES
+    -> ('Rahul',1,'Software Engineer',55000,'2021-06-15'),
+    -> ('Anita',2,'HR Executive',38000,'2020-03-21'),
+    -> ('Suresh',4,'Sales Manager',52000,'2019-08-10'),
+    -> ('Priya',1,'Team Lead',65000,'2022-01-05'),
+    -> ('Kiran',3,'Finance Analyst',48000,'2018-12-11'),
+    -> ('Deepika',2,'HR Manager',60000,'2019-10-19');
+Query OK, 6 rows affected (0.001 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> select * from employees;
++--------+----------+---------+-------------------+----------+------------+
+| emp_id | emp_name | dept_id | designation       | salary   | join_date  |
++--------+----------+---------+-------------------+----------+------------+
+|      1 | Rahul    |       1 | Software Engineer | 55000.00 | 2021-06-15 |
+|      2 | Anita    |       2 | HR Executive      | 38000.00 | 2020-03-21 |
+|      3 | Suresh   |       4 | Sales Manager     | 52000.00 | 2019-08-10 |
+|      4 | Priya    |       1 | Team Lead         | 65000.00 | 2022-01-05 |
+|      5 | Kiran    |       3 | Finance Analyst   | 48000.00 | 2018-12-11 |
+|      6 | Deepika  |       2 | HR Manager        | 60000.00 | 2019-10-19 |
++--------+----------+---------+-------------------+----------+------------+
+6 rows in set (0.000 sec)
+
+mysql> select * from departments;
++---------+-----------+-----------+
+| dept_id | dept_name | location  |
++---------+-----------+-----------+
+|       1 | IT        | Hyderabad |
+|       2 | HR        | Bangalore |
+|       3 | Finance   | Chennai   |
+|       4 | Sales     | Mumbai    |
++---------+-----------+-----------+
+4 rows in set (0.000 sec)
+
+mysql> -- Avoid re-writing the join between employees and departments everytime some one need an employee department name
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> create view v_emp_dept as\
+    -> \c
+mysql> create view v_emp_dept as 
+    -> select e.emp_id,e.emp_name,e.designation,d.dept_name,d.location
+    -> from employee e
+    -> join departments dd
+    -> \c
+mysql> create view v_emp_dept as select e.emp_id,e.emp_name,e.designation,d.dept_name,d.location from employee e join departments d on e.dept_id=d.dept_id;
+ERROR 1146 (42S02): Table 'jfs2.employee' doesn't exist
+mysql> create view v_emp_dept as select e.emp_id,e.emp_name,e.designation,d.dept_name,d.location from employees e join departments d on e.dept_id=d.dept_id;
+Query OK, 0 rows affected (0.005 sec)
+
+mysql> select * from vw_emp_dept;
+ERROR 1146 (42S02): Table 'jfs2.vw_emp_dept' doesn't exist
+mysql> select * from v_emp_dept;
++--------+----------+-------------------+-----------+-----------+
+| emp_id | emp_name | designation       | dept_name | location  |
++--------+----------+-------------------+-----------+-----------+
+|      1 | Rahul    | Software Engineer | IT        | Hyderabad |
+|      4 | Priya    | Team Lead         | IT        | Hyderabad |
+|      2 | Anita    | HR Executive      | HR        | Bangalore |
+|      6 | Deepika  | HR Manager        | HR        | Bangalore |
+|      5 | Kiran    | Finance Analyst   | Finance   | Chennai   |
+|      3 | Suresh   | Sales Manager     | Sales     | Mumbai    |
++--------+----------+-------------------+-----------+-----------+
+6 rows in set (0.001 sec)
+
+mysql> create view v1 as
+    -> select d.dept_name,count(e.emp_id) as total_emp,sum(e.salary) as total_salary,avg(e.salary) as avg_salary from employees e
+    -> join departments d
+    -> on e.dept_id=d.dept_id
+    -> group by d.dept_name;
+Query OK, 0 rows affected (0.002 sec)
+
+mysql> select * from v1;
++-----------+-----------+--------------+--------------+
+| dept_name | total_emp | total_salary | avg_salary   |
++-----------+-----------+--------------+--------------+
+| IT        |         2 |    120000.00 | 60000.000000 |
+| HR        |         2 |     98000.00 | 49000.000000 |
+| Finance   |         1 |     48000.00 | 48000.000000 |
+| Sales     |         1 |     52000.00 | 52000.000000 |
++-----------+-----------+--------------+--------------+
+4 rows in set (0.004 sec)
+
+mysql> create view v2 as
+    -> select emp_name,salary as montly_salary,salary*12 as annual_salary
+    -> from employees;
+Query OK, 0 rows affected (0.005 sec)
+
+mysql> select * from v2;
++----------+---------------+---------------+
+| emp_name | montly_salary | annual_salary |
++----------+---------------+---------------+
+| Rahul    |      55000.00 |     660000.00 |
+| Anita    |      38000.00 |     456000.00 |
+| Suresh   |      52000.00 |     624000.00 |
+| Priya    |      65000.00 |     780000.00 |
+| Kiran    |      48000.00 |     576000.00 |
+| Deepika  |      60000.00 |     720000.00 |
++----------+---------------+---------------+
+6 rows in set (0.002 sec)
+
+mysql> select dept_name,avg_salary from v1 where avg_salary>50000;
++-----------+--------------+
+| dept_name | avg_salary   |
++-----------+--------------+
+| IT        | 60000.000000 |
+| Sales     | 52000.000000 |
++-----------+--------------+
+2 rows in set (0.002 sec)
+
+mysql> -- mutli level views
+Query OK, 0 rows affected (0.000 sec)
+
+mysql> create view v3 as
+    -> select dept_name,avg_salary from v1 where avg_salary>50000;
+Query OK, 0 rows affected (0.001 sec)
+
+mysql> select * from v3;
++-----------+--------------+
+| dept_name | avg_salary   |
++-----------+--------------+
+| IT        | 60000.000000 |
+| Sales     | 52000.000000 |
++-----------+--------------+
+2 rows in set (0.001 sec)
+
+mysql> alter view v_emp_dept as
+    -> select e.emp_id,e.emp_name,d.dept_name
+    -> from employees e
+    -> join departments d
+    -> on e.emp_id=d.dept_id;
+Query OK, 0 rows affected (0.003 sec)
+
+mysql> select * from v_emp_dept;
++--------+----------+-----------+
+| emp_id | emp_name | dept_name |
++--------+----------+-----------+
+|      1 | Rahul    | IT        |
+|      2 | Anita    | HR        |
+|      3 | Suresh   | Finance   |
+|      4 | Priya    | Sales     |
++--------+----------+-----------+
+4 rows in set (0.001 sec)
+
+mysql> drop view v_emp_dept;
+Query OK, 0 rows affected (0.002 sec)
+
+mysql> 
+mysql> select table_name 
+    -> from information_schema.views
+    -> where table_schema='jfs2';
++------------+
+| TABLE_NAME |
++------------+
+| v1         |
+| v2         |
+| v3         |
++------------+
+3 rows in set (0.003 sec)
